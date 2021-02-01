@@ -35,7 +35,7 @@ class DBLayer
 	function __construct(
 		$db_host="localhost", 
 		$db_username="root", 
-		$db_password="root", 
+		$db_password="", 
 		$db_name="socialmac", 
 		$db_prefix="", $p_connect=false, $debug = false)
 	{

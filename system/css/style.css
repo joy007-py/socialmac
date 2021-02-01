@@ -1656,6 +1656,15 @@ h1.title{
     border-radius: 5px;
 }
 
+.error {
+    background: #f14545;
+    padding: 20px 10px;
+    margin-bottom: 20px;
+    border: 1px solid #A7FCA7;
+    border-radius: 5px;
+    color: #fff;
+}
+
 
 
 
