@@ -170,7 +170,7 @@
 
         if (isset($error))
         {
-            echo "<div class=\"error\">" . $error . "</div>";
+            echo $error;
         }
 
         require 'navigation.php';
