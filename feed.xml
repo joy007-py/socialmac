@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+	<channel>
+	<title>Standalone RSS Feed Has Not Been generated</title>
+	<description>Standalone RSS Feed Has Not Been generated</description>
+	<link></link>
+		<item>
+		<title>Standalone RSS Feed Has Not Been generated</title>
+		<link></link>
+		<guid>Standalone RSS Feed Has Not Been generated</guid>
+		<description>The RSS feed for this site has not yet been generated. If you're the site owner, you must make this file writable by PHP then visit the main standalone page, and it will automatically generate the RSS feed.</description>
+		</item>
+		
+	</channel>
+</rss>

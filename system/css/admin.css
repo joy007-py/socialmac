@@ -1,0 +1,156 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 28, 2015, 10:31:02 PM
+    Author     : PrestigeWebDev
+*/
+body div.site-content{
+    max-width:100%;
+    width:100%;
+    margin:-10px 0 0 0;
+    min-height:800px;
+}
+
+#content {
+  width: auto;
+  background-color: #d5d8dd;
+  padding-top: 0px;
+}
+
+.col-sm-10 {
+  background-color: white;
+  padding-top: 2em;
+}
+
+
+.admin-container{
+    padding-top:0;
+    padding-bottom:30px;
+}
+
+.admin-nav{
+    background-color:#D5D8DD;
+    padding-top: 2em;
+}
+
+.login-form{
+    background-color:#0182c4;
+    border:1px solid #21759b;
+    padding:20px;
+}
+
+
+.btn-red {
+  background-color: #c02;
+  color: white;
+}
+
+
+.no-margins{
+    margin:0 !important;
+}
+
+.droppable{
+    min-height:30px;
+    background-color:#EFEFEF;
+    border:2px dashed #999;
+    margin-bottom:10px;
+}
+
+.droppable .padded{
+    margin-bottom:0;
+}
+    
+.rewrite-container{
+    padding:10px;
+    background-color:#E2E2E2;
+    border:1px solid #939393;
+}
+
+
+.all-links > ul {
+        margin: auto;
+        padding: 0;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+}
+
+.all-links ul li {
+        list-style: none;
+        border: 1px solid #CCC;
+        background: #F6F6F6;
+        font-family: "Tahoma";
+        color: #1C94C4;
+        margin: 5px 0 5px 5px;
+        padding: 10px 5px;
+        min-height: 70px;
+        cursor: move;
+}
+
+.all-links ul li:first-child {
+  margin-top: 0;
+}
+
+.handles span {
+        cursor: move;
+}
+li.disabled {
+        opacity: 0.5;
+}
+.sortable-titles{
+    padding:0;
+    margin: 0;
+    list-style-type: none;
+}
+.sortable-titles li{
+    text-align:right;
+    height: 90px;
+/*     height: 95px; */
+/*     margin:  */
+    
+}
+li.highlight {
+        background: #FEE25F;
+}
+li.sortable-placeholder {
+        border: 1px dashed #CCC;
+        background: none;
+        height: 90px;
+}
+
+li.sortable-placeholder:first-child {
+  margin-top: 0;
+}
+
+ul.sortable input {
+  display: inline;
+/*   margin-right: -2em; */
+  width: 95%;
+}
+
+.no-pad {
+  padding: 0px;
+  font-size: smaller;
+}
+
+/*
+.rewrite-container > form > div:first-child {
+  padding-left: 0;
+}
+
+.rewrite-container > form > div:last-child {
+  padding-right: 0;
+}
+*/
+
+.rewrite-container > form > div {
+  padding-left: 0;
+  padding-right: 0;
+}

@@ -1,0 +1,8 @@
+Sitemap: https://socialmac.com/sitemap
+
+User-agent: msnbot
+Disallow: /rss
+
+User-agent: *
+Disallow: /admin/
+Crawl-delay: 0.5

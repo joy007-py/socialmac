@@ -1,0 +1,193 @@
+body {
+	background-color: #fff;
+	margin:0px;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 11.5pt;
+	font: 12px "Trebuchet MS", "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	line-height: 1.4em;
+}
+	
+#wrapper {
+	padding: 0px 0px;
+	margin: auto;
+	background-color: #FFFFFF;
+    width:950px;
+}
+
+#header {
+    position: relative;
+    z-index: 1000;
+    height: 77px;
+	background: #9fa9b5;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+	
+#breadcrumb {
+    position: relative;
+    top: -10px;
+    z-index: 10;
+	height: 29px;
+	padding-top: 14px;
+	margin-bottom: 25px;
+	background:#acbecc;
+	-moz-border-radius-bottomright:5px;
+	-moz-border-radius-bottomleft:5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+
+#breadcrumb #url {
+	margin-top:4px;
+	margin-left:5px;
+	float: left;
+	height: 5px;
+}
+
+#breadcrumb .rss {
+	margin-right: 5px;
+	float: right;
+	height: 19px;
+}
+
+#breadcrumb .breadcrumb_button {
+	margin-top:2px;
+	color: #d9eafb;
+	text-align:center;
+	vertical-align:middle;
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	padding: 2px 7px 0px 7px;
+	border: 1px solid #D5DFE9;
+	background-color:#30618C;
+	vertical-align:middle;
+}
+#breadcrumb .breadcrumb_button:hover { 
+    background-color: #3771A5;
+}
+
+
+#breadcrumb a {
+	text-decoration:none;
+}
+
+#breadcrumb .breadcrumb_button p {
+	vertical-align:middle;
+}
+
+
+#maincontent {
+	text-align: justify;
+	margin: 0 318px 0 0;
+	padding: 0 20px 5px 0;
+	border-right: 1px solid #999999;
+}
+
+#maincontent a {
+	color:#236496;
+}
+
+#rightcolumn {
+	width: 301px;
+	float: right;
+	font: 11px/12px "Trebuchet MS", "Lucida Grande", "Geneva", Verdana, Helvetica, Arial, sans-serif;
+	padding-left: 10px;
+	text-align: left;
+	color: #333;
+	padding-bottom: 30px;
+}
+
+#footer {
+	padding-top: 4px;
+	text-align: center;
+	clear: both;
+	border-top: solid #999999 1px;
+}
+
+a {
+	color: #443FBE;
+}
+    
+#below_nav {
+	margin-top:45px;
+	padding-right:15px;
+    float:right;
+    display:inline;
+}
+
+
+#below_nav a.nav_button  {
+	padding:3px 10px 3px 10px;
+	font-weight:bold;
+	-moz-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius:13px;
+	text-decoration:none;
+	background-color:#a8b2bb;
+	color:#ffffff;
+	border:1px solid #8B939B;
+}
+
+#below_nav a.nav_button:hover { 
+    background-color: #B6C2CB;
+}
+
+
+#nav {
+    float:left;
+}
+	
+h1 {
+	font-size: 13pt;
+	line-height: 13pt;
+	color: #eeeded;
+}
+
+#header h1,h2 {
+	width: 300px;
+	margin-left:5px;
+}
+	
+h2 {
+	margin-top:-10px;
+	font-size: 11pt;
+	color: #eeeded;
+}
+	
+h3 {
+	font-size: 11pt;
+	color:#ffffff;
+}
+	
+h3, p {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+	
+.breadcrumb {
+	font-size: 10pt;
+	margin-bottom: 24px;
+}
+
+.breadcrumb a {
+	color:#ffffff;
+	border-color: transparent transparent transparent #333333;
+}
+	
+.menuSpacer {
+	border-bottom: 1px solid #999999;
+	margin-bottom: 15px; 
+}
+	
+.prmac-releaseSummary {
+	margin-bottom: 20px;
+}
+
+
+
+
