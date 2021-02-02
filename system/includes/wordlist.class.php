@@ -1,11 +1,13 @@
 <?php
 
+require  __DIR__ . '/wordlist.interface.php';
+
 /**
  * Wordlist Class
  * 
  * @author Joy Kumar Bera <kusjoybera@gmail.com>
  */
-class WordList
+class WordList implements WordListInterface
 {
     /**
      * @var array $fileNames
@@ -139,5 +141,20 @@ class WordList
         return $returnData;
     }
 
-    
+    /**
+     * Return current list file full path
+     * 
+     * @return array
+     */
+    public function getAllListFileFullPath()
+    {
+        $paths = [];
+
+        foreach( $this->fileNames as $fileName )
+        {
+            $paths[$fileName] = $this->getFileFullPath( $fileName );
+        }
+
+        return $paths;
+    }
 }
