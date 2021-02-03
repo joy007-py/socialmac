@@ -1,76 +1,7 @@
 <?php
-
-
-    if ( ! empty ( $_REQUEST['respin'] ) )
-    {
-
-        $stop_words = str_replace(', ','\n',$_REQUEST['stop_words']);
-
-        $data = array();
-        
-        // Spin Rewriter API settings - authentication:
-        $data['email_address'] = "ray@geeksuit.com";                // your Spin Rewriter email address goes here
-        $data['api_key'] = "e90ca7c#5750694_7af3045?5df5907";       // your unique Spin Rewriter API key goes here
-             
-        // Spin Rewriter API settings - request details:
-        $data['action'] = "unique_variation";                       // possible values: 'api_quota', 'text_with_spintax', 'unique_variation', 'unique_variation_from_spintax'
-        $data['text'] = $_REQUEST['respin'];
-        $data['protected_terms'] = "{$stop_words}"; // protected terms: John, Douglas Adams, then
-        $data['auto_protected_terms'] = "false";                    // possible values: 'false' (default value), 'true'
-        $data['confidence_level'] = "low";                      // possible values: 'low', 'medium' (default value), 'high'
-        $data['nested_spintax'] = "true";                           // possible values: 'false' (default value), 'true'
-        $data['auto_sentences'] = "false";                          // possible values: 'false' (default value), 'true'
-        $data['auto_paragraphs'] = "false";                         // possible values: 'false' (default value), 'true'
-        $data['auto_new_paragraphs'] = "true";                      // possible values: 'false' (default value), 'true'
-        $data['auto_sentence_trees'] = "false";                     // possible values: 'false' (default value), 'true'
-        $data['spintax_format'] = "{|}";                            // possible values: '{|}' (default value), '{~}', '[|]', '[spin]', '#SPIN'
-        
-        $api_response = json_decode(spinrewriter_api_post($data));
-
-        if(strtolower($api_response->status) == 'ok')
-        {
-            $rtn = true;
-            $res = [ 'success' => $rtn , 'article' => $api_response->response ] ;
-            die(jsonResponse($rtn,$res));
-        }
-    
-        $rtn = false;
-        $res = [ 'success' => $rtn , 'error' => 'Something has gone wrong. Please try again!' ] ;
-        die(jsonResponse($rtn,$res));
-
-    }
-
-
-    function spinrewriter_api_post($data){
-        $data_raw = "";
-        foreach ($data as $key => $value){
-            $data_raw = $data_raw . $key . "=" . urlencode($value) . "&";
-        }
-        
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://www.spinrewriter.com/action/api");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_raw);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = trim(curl_exec($ch));
-        curl_close($ch);
-        return $response;
-    }
-
-
-    function jsonResponse(bool $success, array $data = null)
-    {
-
-        $data = is_array($data) ? array_merge(['success'=>$success],$data) : ['success'=>$success];
-        header('Content-Type: application/json');
-        echo json_encode($data);
-
-    }
-
     require_once 'functions.php';
     require_once("../includes/prmac_framework.php");
     require_once '../includes/header.inc.php';
-
 ?>
 <link href="/system/css/admin.css" rel="stylesheet">
 <?php
@@ -83,98 +14,94 @@
      * and open the template in the editor.
      */
 
+    $linkNames = array('company' => 'Company', 'product' => 'Product', 'download' => 'Download', 'image' => 'Image');
+    
     if ( ! $isAdmin )
     {
         require_once '../templates/admin/login.php';
         
     }
 
+    elseif( isset($_REQUEST['publishart']) )
+    {
+        // echo '<pre>';
+        // print_r($_REQUEST);
+        // echo '</pre>';
+
+        $error = false;
+        $post = $_POST['rewrite'];
+
+        $rewrite_id = intval($_POST['rewrite_id']);
+
+        $post['summary'] = nl2br($post['summary']);
+        $post['active']='1';
+        $post['publish_date']=time();
+        
+        $text = $_POST['text'];
+        $links = $_POST['link'];
+        
+        foreach ( array_keys ( $linkNames ) as $idx => $linkName )
+        {
+            $post[$linkName . '_text'] = $text[$idx];
+            $post[$linkName . '_url'] = $links[$idx];
+        }
+
+        $post['summary'] = release_rewrite($post);
+        
+        if (!$error)
+        {
+            //Update
+            $query = 'UPDATE rewrites SET ';
+            $updateParts = array();
+            foreach ($post as $field => $value) {
+                $updateParts[] = "{$field} = \"" . $db->escape($value) . '"';
+            }
+            $query .= implode(', ', $updateParts);
+            $query .= ' WHERE rewrite_id = ' . $rewrite_id;
+            $db->query($query);
+            
+            $success = "<div class=\"success\">Post successfully updated.</div>";
+            $row = $db->fetch_array($db->query('SELECT release_id, trackback FROM rewrites WHERE rewrite_id = ' . $rewrite_id));
+
+            if ( ! empty ( $row ) && ! empty ( $row [ 'trackback' ] ) )
+            {
+                stalone_submit_trackback($row['release_id'], $post['title'], $row['trackback']);
+            }
+
+        }
+    }
+
+    elseif ( isset ( $_REQUEST [ 'delete' ] ) )
+    {
+        $db->query("DELETE from rewrites WHERE rewrite_id='" . $_POST['rewrite_id']. "'");
+        $success = "<div class=\"success\">Post successfully DELETED.</div>";
+    }
+    
+    if (isset($_REQUEST['start']))
+    {
+        $start = intval ( $_REQUEST [ 'start' ] ) ;
+    }
+
     else
     {
+        $start = 0;
+    }
 
-        $linkNames = array('company' => 'Company', 'product' => 'Product', 'download' => 'Download', 'image' => 'Image');
+    $limit = 50;
 
-        if ( isset ( $_REQUEST [ 'update' ] ) )
-        { 
+    $prev = $start - $limit;
 
-            $error = false;
-            $post = $_POST['rewrite'];
+    if (isset($success))
+    {
+        echo $success;
+    }
 
-            $rewrite_id = intval($_POST['rewrite_id']);
+    if (isset($error))
+    {
+        echo $error;
+    }
 
-            $post['summary'] = nl2br($post['summary']);
-            $post['active']='1';
-            $post['publish_date']=time();
-            
-            $text = $_POST['text'];
-            $links = $_POST['link'];
-            
-            foreach ( array_keys ( $linkNames ) as $idx => $linkName )
-            {
-                $post[$linkName . '_text'] = $text[$idx];
-                $post[$linkName . '_url'] = $links[$idx];
-            }
-
-            $post['summary'] = release_rewrite($post);
-            
-            if (!$error)
-            {
-                //Update
-                $query = 'UPDATE rewrites SET ';
-                $updateParts = array();
-                foreach ($post as $field => $value) {
-                  $updateParts[] = "{$field} = \"" . $db->escape($value) . '"';
-                }
-                $query .= implode(', ', $updateParts);
-                $query .= ' WHERE rewrite_id = ' . $rewrite_id;
-                $db->query($query);
-                
-                $success = "<div class=\"success\">Post successfully updated.</div>";
-                $row = $db->fetch_array($db->query('SELECT release_id, trackback FROM rewrites WHERE rewrite_id = ' . $rewrite_id));
-
-                if ( ! empty ( $row ) && ! empty ( $row [ 'trackback' ] ) )
-                {
-                  stalone_submit_trackback($row['release_id'], $post['title'], $row['trackback']);
-                }
-
-            }
-
-        }
-
-        else if ( isset ( $_REQUEST [ 'delete' ] ) )
-        {
-            $db->query("DELETE from rewrites WHERE rewrite_id='" . $_POST['rewrite_id']. "'");
-            $success = "<div class=\"success\">Post successfully DELETED.</div>";
-        }
-
-        if (isset($_REQUEST['start']))
-        {
-            $start = intval ( $_REQUEST [ 'start' ] ) ;
-        }
-
-        else
-        {
-            $start = 0;
-        }
-
-        $limit = 50;
-
-        $prev = $start - $limit;
-
-        #require 'header_bootstrap.php';
-
-        if (isset($success))
-        {
-          echo $success;
-        }
-
-        if (isset($error))
-        {
-            echo $error;
-        }
-
-        require 'navigation.php';
-
+    require 'navigation.php';
 ?>
 <style>
     input.btn-generate
@@ -341,12 +268,10 @@
     <div class="admin-container">
         <h2>Stand Alone</h2>
     <br />
-    <div class="row no-margins">
-    <?php
-    $result = $db->query('SELECT * FROM rewrites WHERE active = 0 AND publish_date < ' . time() . ' ORDER BY publish_date DESC');
-    while ($draft = $db->fetch_assoc($result)) {
-        
-        ?>
+    <div class="row no-margins" id="article_list">
+        <?php
+        $result = $db->query('SELECT * FROM rewrites WHERE active = 0 AND publish_date < ' . time() . ' ORDER BY publish_date DESC');
+        while ($draft = $db->fetch_assoc($result)) : ?>
             <div class="rewrite-container clearfix">
                 <form action="/admin/rewrites.php" method="post" id="article_id_<?= $draft [ 'rewrite_id' ] ?>">
                     <div class="col-sm-5">
@@ -362,9 +287,9 @@
                     </div>
                     <div class="col-sm-1 all-links no-pad">
                         <ul class="sortable-titles">
-                          <?php foreach ($linkNames as $title): ?>
+                        <?php foreach ($linkNames as $title): ?>
                             <li><?= $title ?> &gt;</li>
-                          <?php endforeach; ?>
+                        <?php endforeach; ?>
                         </ul>
                     </div>
                     
@@ -373,8 +298,8 @@
                         <?php foreach ($linkNames as $link => $title) { ?>
                             
                             <li id="<?= $link ?>">
-                                  <input type="text" class="form-control text" name="text[]" value="<?= $draft[$link . '_text'] ?>" />
-                                  <input id="url<?=$draft['rewrite_id']?>_<?=$link ?>" type="text" class="form-control link" name="link[]" value="<?= $draft[$link . '_url'] ?>" /> <a href="javascript:{}" onclick="javascript: window.open($('#url<?=$draft['rewrite_id']?>_<?=$link ?>').val())">&crarr;</a>
+                                <input type="text" class="form-control text" name="text[]" value="<?= $draft[$link . '_text'] ?>" />
+                                <input id="url<?=$draft['rewrite_id']?>_<?=$link ?>" type="text" class="form-control link" name="link[]" value="<?= $draft[$link . '_url'] ?>" /> <a href="javascript:{}" onclick="javascript: window.open($('#url<?=$draft['rewrite_id']?>_<?=$link ?>').val())">&crarr;</a>
                             </li>
                         <?php }
                         ?>
@@ -385,15 +310,8 @@
                         <input type="hidden" name="rewrite_id" value="<?= $draft [ 'rewrite_id' ] ?>" />
                         <div style="clear:both"></div>
                         <input class="btn btn-default hide publish_article" type="submit" name="update" value="Publish"/>
-                        <input class="btn btn-publish" type="submit" name="publishart" onclick="publishArticle('<?=$draft [ 'rewrite_id' ] ?>')" value="Publish Article"/>
-                        <span class="spinbutton" id="spinbutton_<?= $draft [ 'rewrite_id' ] ?>">
-                        <!-- <input name="respin" type="submit" class="btn btn-generate" onclick="showMessage('Review Article','article-rewrite_id=<?= $draft [ 'rewrite_id' ] ?>','cancel','yes')" value="SPIN ARTICLE" style="float: left;"/> -->
-                            <input name="respin" type="submit" class="btn btn-generate" onclick="showMessage('Review Article','article-rewrite_id=<?= $draft [ 'rewrite_id' ] ?>','cancel','yes')" value="SPIN ARTICLE" style="float: left;"/>
-                        </span>
-                        <span class="respinbutton" id="respinbutton_<?= $draft [ 'rewrite_id' ] ?>" style="display: none;float: left;">
-                            <!-- <button type="button" class="gen-button green" onclick="submit_article()">Publish Article</button> -->
-                            <button type="button" class="gen-button blue" onclick="spin_article()">Respin Article</button>
-                        </span>
+                        <input class="btn btn-publish" type="submit" name="publishart"  value="Publish Article"/>
+                        <button type="submit" class="btn btn-default" style="float:left;" data-rewrite_id=<?= $draft [ 'rewrite_id' ] ?>>Spin Article</button>
                         <input class="btn btn-red" type="submit" name="delete" value="Delete Article" />
                         <input type="text" value="" id="stop_words_<?=$draft [ 'rewrite_id' ] ?>" class="respin" placeholder="Ex: MacPlus Software, macOS, Apple Dock">
                         <button onclick="myFunction('<?=$draft [ 'rewrite_id' ] ?>')" class="copy">Copy</button>
@@ -401,20 +319,16 @@
                 </form>
             </div>
             <hr/>
-    <?php } ?>
-
-
+        <?php endwhile ?>
     </div>
     <!-- Pagination -->
     <div align="right"><?php if ($prev >= 0) { ?><a href="?start=<?php echo $prev; ?>&order=<?php echo $order; ?><?php echo (isset($_REQUEST['uid']) ? '&uid=' . intval($_REQUEST['uid']) : ''); ?>">&laquo; Previous</a> <?php } ?><?php if ($prev >= ($limit - 1)) { ?><a href="?start=<?php echo $start + $limit; ?>&order=<?php echo $order; ?><?php echo (isset($_REQUEST['uid']) ? '&uid=' . intval($_REQUEST['uid']) : ''); ?>">Next &raquo;</a><?php } ?>
 
-  </div></div></div>
-    <?php
-//     require 'footer.php';
-    
-}
-require_once '../includes/footer.inc.php';
-?>
+  </div>
+  </div>
+  </div>
+  
+<?php require_once '../includes/footer.inc.php'; ?>
 
 <script type="text/javascript" defer="defer">
     function allowDrop(ev) {
@@ -447,4 +361,47 @@ require_once '../includes/footer.inc.php';
         });
     });
 
-</script>    
+    
+document.getElementById("article_list").addEventListener("click", (e) => {
+    
+    if ( e.target.tagName == 'BUTTON' && ( e.target.textContent == 'Spin Article' || e.target.textContent == 'Respin Article' ) )
+    {
+        e.preventDefault();
+
+        const id = e.target.dataset.rewrite_id;
+        const article_ref = document.getElementById("summary_" + id);
+
+        let article_val = article_ref.value;
+        const stop_word = document.getElementById("stop_words_" + id).value;
+
+        const url = 'http://socialmac.test/spintext';
+
+        fetch(url, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "article": article_val,
+                "stop_word": stop_word
+            })
+        })
+        .then( (response) => {
+            return response.json();
+        })
+        .then( (data) => {
+
+            if(data.status)
+            {
+                article_ref.value = data.article;
+                e.target.innerText = 'Respin Article';
+            }
+            else 
+            {
+                console.log(data);
+            }
+        });
+    }
+});
+</script>

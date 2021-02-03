@@ -5,7 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # If the request is not for a valid file
 RewriteCond %{REQUEST_FILENAME} !-f
 
-RewriteRule ^(admin|contact|articles|cron|register|login|download|projects|static|tickets|dashboard)\/?([a-zA-Z]{1,25})?\/?([a-zA-Z0-9\-_+]{1,40})?\/? system/public/$1.php?q=$2&id=$3 [QSA] [NC] [L]
+RewriteRule ^(admin|contact|articles|cron|register|login|download|projects|static|tickets|dashboard|spintext)\/?([a-zA-Z]{1,25})?\/?([a-zA-Z0-9\-_+]{1,40})?\/? system/public/$1.php?q=$2&id=$3 [QSA] [NC] [L]
 
 # If the request is not for a valid directory
 RewriteCond %{REQUEST_FILENAME} !-d

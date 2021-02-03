@@ -38,7 +38,7 @@ $wordlist = new WordList();
                     <?php $i = 1 ?>
                     <?php foreach( $wordlist->getCurrentWordList() as $key => $value ) : ?>
                         <div class="col-sm-3 col-md-3">
-                            <h1 style="color: black">Column_<?php echo $i ?></h1>
+                            <h3 style="color: black">Column_<?php echo $i ?></h3>
                             <div class="form-group">
                                 <textarea class="form-control" name="<?php echo $key ?>" rows="20"><?php echo $value ?></textarea>
                             </div>

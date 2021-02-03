@@ -152,7 +152,7 @@ class WordList implements WordListInterface
 
         foreach( $this->fileNames as $fileName )
         {
-            $paths[$fileName] = $this->getFileFullPath( $fileName );
+            $paths[$fileName] = $this->getFileFullPath($fileName);
         }
 
         return $paths;

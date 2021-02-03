@@ -138,11 +138,14 @@
                 event.preventDefault();
 
                 $('.blue').hide();
-                //$(modal + ' .modal-body').html((document.getElementById()); 
+                
 
                 window.article_id = message.replace('article-rewrite_id=','');
                 window.url = '/admin';
-                window.formData = 'respin='+$('form#article_id_'+window.article_id+' textarea').text()+'&stop_words='+$('form#article_id_'+window.article_id+' input.respin').val();
+
+                const respin = document.getElementById("summary_" + window.article_id).value;
+                window.formData = 'respin='+respin+'&stop_words='+$('form#article_id_'+window.article_id+' input.respin').val();
+                
                 spin_article();
                 
             }
@@ -240,33 +243,20 @@
                 dataType: "json",
                 success: function (data)
                 {
-
-                    if (data.success != undefined)
+                    console.log(data);
+                    if (data.status == false)
                     {
-
-                        if (data.success == false)
-                        {
-                            $(modal + ' .modal-body').html(data.error);
-                            $('.blue').hide();
-                            $('.green').hide();
-                        }
-
-                        else
-                        {
-                            //$(modal + ' .modal-body').html(data.article);
-                            $('#summary_'+ article_id).val(data.article)
-                            $('.blue').show();
-                            $('.green').show();
-                            $('#messageModal').modal('hide');
-                        }
-
+                        $(modal + ' .modal-body').html(data.error);
+                        $('.blue').hide();
+                        $('.green').hide();
                     }
-
                     else
                     {
-                        alert('The script was not called properly, because data.error is undefined.');
+                        $('#summary_'+ article_id).val(data.article)
+                        $('.blue').show();
+                        $('.green').show();
+                        $('#messageModal').modal('hide');
                     }
-
                 }
 
             });
