@@ -1,6 +1,6 @@
 <?php
     require_once 'functions.php';
-    require_once("../includes/prmac_framework.php");
+    require_once '../includes/prmac_framework.php';
     require_once '../includes/header.inc.php';
 ?>
 <link href="/system/css/admin.css" rel="stylesheet">
@@ -21,13 +21,8 @@
         require_once '../templates/admin/login.php';
         
     }
-
     elseif( isset($_REQUEST['publishart']) )
     {
-        // echo '<pre>';
-        // print_r($_REQUEST);
-        // echo '</pre>';
-
         $error = false;
         $post = $_POST['rewrite'];
 
@@ -104,6 +99,48 @@
     require 'navigation.php';
 ?>
 <style>
+    .loader {
+    border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid #0F6CDC;
+    width: 10px;
+    height: 10px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: absolute;
+    right: 3px;
+    top: 11px;
+    }
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .spin-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        user-select: none;
+        background: #0F6CDC;
+        color: white;
+        font-weight: bold;
+        transition: all linear 0.5s;
+        position: relative;
+    }
     input.btn-generate
     {
         display: inline-block;
@@ -309,9 +346,8 @@
                         <a href="https://<?=PRMAC_URI?>/release-id-<?=$draft['release_id']?>.htm" target="_blank">View article on prMac</a>
                         <input type="hidden" name="rewrite_id" value="<?= $draft [ 'rewrite_id' ] ?>" />
                         <div style="clear:both"></div>
-                        <input class="btn btn-default hide publish_article" type="submit" name="update" value="Publish"/>
                         <input class="btn btn-publish" type="submit" name="publishart"  value="Publish Article"/>
-                        <button type="submit" class="btn btn-default" style="float:left;" data-rewrite_id=<?= $draft [ 'rewrite_id' ] ?>>Spin Article</button>
+                        <button type="submit" class="btn btn-generate spin-btn" style="float:left;" data-rewrite_id=<?= $draft [ 'rewrite_id' ] ?>>Spin Article</button>
                         <input class="btn btn-red" type="submit" name="delete" value="Delete Article" />
                         <input type="text" value="" id="stop_words_<?=$draft [ 'rewrite_id' ] ?>" class="respin" placeholder="Ex: MacPlus Software, macOS, Apple Dock">
                         <button onclick="myFunction('<?=$draft [ 'rewrite_id' ] ?>')" class="copy">Copy</button>
@@ -370,11 +406,15 @@ document.getElementById("article_list").addEventListener("click", (e) => {
 
         const id = e.target.dataset.rewrite_id;
         const article_ref = document.getElementById("summary_" + id);
-
         let article_val = article_ref.value;
         const stop_word = document.getElementById("stop_words_" + id).value;
+        const url = window.location.origin + '/spintext';
 
-        const url = 'http://socialmac.test/spintext';
+        const d = document.createElement("div");
+        d.classList.add("loader");
+
+        e.target.innerText = 'Loading';
+        e.target.appendChild(d);
 
         fetch(url, {
             method: "post",
