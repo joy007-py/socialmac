@@ -1,0 +1,15 @@
+Independent developer Anh Do today announces Pins for Pinboard for iOS, iPadOS, and macOS. Pins is built for Pinboard users who wants to quickly add bookmarks to their account on the go using the share extension, browse their past bookmarks, and explore popular community links. Pins comes with modern features like widgets, Spotlight integration, Shortcuts support, Handoff, drag-and-drop, multitasking capabilities, and more.
+
+Toronto, Canada - Independent developer Anh Do today is pleased to announce the release and immediate availability of Pins for Pinboard for iOS, iPadOS, and macOS. Pins is built for Pinboard.in users who wants to quickly add bookmarks to their account on the go using the share extension, browse their past bookmarks, and explore popular community links. Pins comes with modern features like widgets, Spotlight integration, Shortcuts support, Handoff, drag-and-drop, multitasking capabilities, and more.
+
+Pins supports Pinboard accounts of all sizes, from 1,000 to even 100,000 links. Pinboard users can quickly create Smart Collections to filter bookmarks by title, description, tags, and URL. Share extension and Shortcuts app integration help adding bookmarks from browsers and other apps a snap. Pins helps suggest title and tags for web pages and gives quick access to popular and recommended tags when adding bookmarks.
+
+Pins comes with widgets to rediscover past bookmarks made on the same day in previous years, from a random collection, or a particular smart collection. Users can search for bookmarks right from Spotlight and multitasking easily on iPad with drag-and-drop support, Slide Over and Split View mode options.
+
+System Requirements:
+* macOS 11.0 or later
+* Requires iOS 14.0 or later
+* iPhone, iPad, and iPod touch
+* 11.4 MB
+
+Pins is compatible with the latest iOS, iPadOS, and macOS. The app is free to try with a one-time upgrade to unlock access to all features and available worldwide through the Mac App Store in the Productivity category. Review copies are available upon requests.

@@ -19,7 +19,7 @@
     if ( ! $isAdmin )
     {
         require_once '../templates/admin/login.php';
-        
+        die;
     }
     elseif( isset($_REQUEST['publishart']) )
     {

@@ -73,7 +73,7 @@ class SpinText
 
         if( !empty($words) )
         {
-            $stopWordsList = explode(',', rtrim($stopWordsList, ','));
+            $stopWordsList = explode(',', rtrim($words, ','));
             array_walk($stopWordsList, 'trim');
         }
 
