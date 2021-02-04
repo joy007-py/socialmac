@@ -49,7 +49,7 @@ class WordList implements WordListInterface
      * Save word list data
      * 
      * @param array $data
-     * @return bool
+     * @throws Exception
      */
     public function saveData($data)
     {
