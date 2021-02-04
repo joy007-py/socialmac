@@ -37,7 +37,11 @@ class SpinText
      * @param string $stopWords
      * @param WordListInterface $wordlist
      */
-    public function __construct($text, $stopWords='', WordListInterface $wordlist)
+    public function __construct(
+            $text, 
+            $stopWords='', 
+            WordListInterface $wordlist
+        )
     {
         $this->setText($text);
         $this->setStopWords($stopWords);
@@ -121,7 +125,11 @@ class SpinText
                     }
                 }
 
-                $this->text = str_replace($original, $replacement, $this->text);
+                $this->text = str_replace(
+                    $original, 
+                    $replacement, 
+                    $this->text
+                );
             }
         }
         
