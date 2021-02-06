@@ -5,8 +5,6 @@ require dirname(__DIR__) . '/includes/wordlist.class.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-file_put_contents(__DIR__ . '/log.txt', $data);
-
 $spinText = new SpinText(
     $data['article'],
     $data['stop_word'],

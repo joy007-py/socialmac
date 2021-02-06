@@ -45,7 +45,7 @@ $wordlist = new WordList();
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+  /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);*/
   border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
   border-image: none;
   border-radius: 6px 6px 6px 6px;
@@ -59,13 +59,22 @@ $wordlist = new WordList();
   padding: 5px 8px;
   transition: background-color 0.2s ease 0s;
   resize: none;
+  text-align:center;
 }
 .splClassAdd textarea:focus {
     background: none repeat scroll 0 0 #FFFFFF;
     outline-width: 0;
 }
+.columnBox{
+    padding:0 20px;
+}
+.colHeadingText{
+    color: #000;
+    text-align:center;
+    font-family: "Open Sans", Helvetica, sans-serif;
+}
 </style>
-<div class="container">
+<div class="columnBox">
     <div class="row">
         <?php require __DIR__  .'/navigation.php'; ?>
 
@@ -75,7 +84,7 @@ $wordlist = new WordList();
                     <?php $i = 1 ?>
                     <?php foreach( $wordlist->getCurrentWordList() as $key => $value ) : ?>
                         <div class="col-sm-3 col-md-3">
-                            <h3 style="color: black">Column_<?php echo $i ?></h3>
+                            <h3 class="colHeadingText">Column_<?php echo $i ?></h3>
                             <div class="form-group">
                                 <textarea class="form-control" name="<?php echo $key ?>" rows="20"><?php echo $value ?></textarea>
                             </div>
