@@ -69,7 +69,7 @@ class SpinText
     /**
      * Set stop words
      * 
-     * @param string $words
+     * @param string
      */
     public function setStopWords($words)
     {
@@ -78,10 +78,14 @@ class SpinText
         if( !empty($words) )
         {
             $stopWordsList = explode(',', rtrim($words, ','));
-            array_walk($stopWordsList, 'trim');
+
+            foreach($stopWordsList as &$word)
+            {   
+                $word = trim($word);
+            }
         }
 
-        $this->stopWords = $stopWordsList;        
+        $this->stopWords = $stopWordsList;
     }
 
     /**
@@ -111,25 +115,39 @@ class SpinText
             );
         }
 
+        // check for stop words and replace with key
+        if( !empty($this->stopWords) )
+        {
+            foreach( $this->stopWords as $k => $v )
+            {
+                if( strpos($this->text, $v) !== false )
+                {
+                    $this->text = str_replace($v, (string)$k, $this->text);
+                }
+            }
+        }
+
         // so now we have some word list for spinning
         foreach( $this->wordListData as $key => $values )
         {
             foreach( $values as $original => $replacement )
             {
-                // check for stop words
-                if( !empty($this->stopWords) )
-                {
-                    if (in_array($original, $this->stopWords))
-                    {
-                        continue;
-                    }
-                }
-
-                $this->text = str_replace(
+                $this->text = str_ireplace(
                     $original, 
                     $replacement, 
                     $this->text
                 );
+            }
+        }
+
+        if( !empty($this->stopWords) )
+        {
+            foreach( $this->stopWords as $wordKey => $wordValue )
+            {
+                if( strpos($this->text, (string)$wordKey) !== false )
+                {
+                    $this->text = str_replace((string)$wordKey, $wordValue, $this->text);
+                }
             }
         }
         
